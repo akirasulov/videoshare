@@ -7,13 +7,13 @@ export default defineConfig({
         laravel({
             input: "resources/js/app.js",
             refresh: true,
+            // detectTls: "videoshare.test",
         }),
         vue({
             template: {
                 transformAssetUrls: {
                     base: null,
                     includeAbsolute: false,
-                    // detectTls: "videoshare.test",
                 },
             },
         }),

@@ -1,6 +1,32 @@
 <script setup>
+import PrimaryButton from "@/Components/PrimaryButton.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
+import { computed, reactive, ref, watch } from "vue";
+
+const state = reactive({
+    stream: null,
+    streamActive: computed(() => state.stream?.active),
+});
+const player = ref(null);
+
+const captureWebcam = () => {
+    navigator.mediaDevices
+        .getUserMedia({
+            video: true,
+        })
+        .then((stream) => {
+            state.stream = stream;
+            console.log(state);
+        });
+};
+
+watch(
+    () => state.stream,
+    (stream) => {
+        player.value.srcObject = stream;
+    },
+);
 </script>
 
 <template>
@@ -21,7 +47,18 @@ import { Head } from "@inertiajs/vue3";
                     class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">
-                        Video Capture
+                        <div v-show="state.streamActive">
+                            <video ref="player" autoplay></video>
+                        </div>
+                        <div
+                            v-if="!state.streamActive"
+                            class="flex items-center justify-center space-x-4"
+                        >
+                            <PrimaryButton @click="captureWebcam"
+                                >Capture WebCam</PrimaryButton
+                            >
+                            <PrimaryButton>Capture WebCam</PrimaryButton>
+                        </div>
                     </div>
                 </div>
             </div>
