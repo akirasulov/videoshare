@@ -1,16 +1,38 @@
 <script setup>
 import PrimaryButton from "@/Components/PrimaryButton.vue";
+import Checkbox from "@/Components/Checkbox.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head } from "@inertiajs/vue3";
 import { computed, reactive, ref, watch } from "vue";
+import InputLabel from "@/Components/InputLabel.vue";
 
 const state = reactive({
     stream: null,
+    audioStream: null,
     streamActive: computed(() => state.stream?.active),
 });
 const player = ref(null);
+const shouldCaptureAudio = ref(true);
+
+const captureAudio = () => {
+    navigator.mediaDevices
+        .getUserMedia({
+            video: false,
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true,
+            },
+        })
+        .then((stream) => {
+            state.audioStream = stream;
+        });
+};
 
 const captureWebcam = () => {
+    if (shouldCaptureAudio.value === true) {
+        captureAudio();
+    }
     navigator.mediaDevices
         .getUserMedia({
             video: true,
@@ -18,11 +40,13 @@ const captureWebcam = () => {
         })
         .then((stream) => {
             state.stream = stream;
-            console.log(stream);
         });
 };
 
 const captureScreen = () => {
+    if (shouldCaptureAudio.value === true) {
+        captureAudio();
+    }
     navigator.mediaDevices
         .getDisplayMedia({
             video: true,
@@ -30,7 +54,6 @@ const captureScreen = () => {
         })
         .then((stream) => {
             state.stream = stream;
-            console.log(stream);
         });
 };
 
@@ -53,7 +76,9 @@ watch(
                 Videos
             </h2>
         </template>
-
+        <center class="py-4 dark:text-white">
+            {{ state }}
+        </center>
         <div class="py-12">
             <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
                 <div
@@ -73,6 +98,18 @@ watch(
                             <PrimaryButton @click="captureScreen"
                                 >Capture Screen</PrimaryButton
                             >
+
+                            <div class="flex items-center space-x-2">
+                                <Checkbox
+                                    id="audio"
+                                    v-model:checked="shouldCaptureAudio"
+                                />
+                                <InputLabel
+                                    for="audio"
+                                    class="text-sm font-medium"
+                                    >Enable audio</InputLabel
+                                >
+                            </div>
                         </div>
                     </div>
                 </div>
