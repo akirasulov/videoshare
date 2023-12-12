@@ -14,10 +14,23 @@ const captureWebcam = () => {
     navigator.mediaDevices
         .getUserMedia({
             video: true,
+            audio: false,
         })
         .then((stream) => {
             state.stream = stream;
-            console.log(state);
+            console.log(stream);
+        });
+};
+
+const captureScreen = () => {
+    navigator.mediaDevices
+        .getDisplayMedia({
+            video: true,
+            audio: false,
+        })
+        .then((stream) => {
+            state.stream = stream;
+            console.log(stream);
         });
 };
 
@@ -57,7 +70,9 @@ watch(
                             <PrimaryButton @click="captureWebcam"
                                 >Capture WebCam</PrimaryButton
                             >
-                            <PrimaryButton>Capture WebCam</PrimaryButton>
+                            <PrimaryButton @click="captureScreen"
+                                >Capture Screen</PrimaryButton
+                            >
                         </div>
                     </div>
                 </div>
