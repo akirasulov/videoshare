@@ -3,6 +3,7 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VideoCreateController;
+use App\Http\Controllers\VideoDestroyController;
 use App\Http\Controllers\VideoIndexController;
 use App\Http\Controllers\VideoShowController;
 use App\Http\Controllers\VideoStoreController;
@@ -30,6 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/videos', VideoStoreController::class)->name('videos.store');
     Route::get('/videos/{video:uuid}', VideoShowController::class)->name('videos.show');
     Route::patch('/videos/{video:uuid}', VideoUpdateController::class)->name('videos.update');
+    Route::delete('/videos/{video:uuid}', VideoDestroyController::class)->name('videos.destroy');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

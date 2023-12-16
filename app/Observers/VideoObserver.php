@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Jobs\ConvertVideoFormat;
 use App\Jobs\GenerateVideoPreviewImage;
 use App\Models\Video;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class VideoObserver
@@ -40,7 +41,10 @@ class VideoObserver
      */
     public function deleted(Video $video): void
     {
-        //
+        Storage::disk('public')
+            ->delete(
+                $video->only('video_path', 'still_path')
+            );
     }
 
     /**

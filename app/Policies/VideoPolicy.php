@@ -16,4 +16,9 @@ class VideoPolicy
     {
         return $user->id === $video->user_id;
     }
+
+    public function destroy(User $user, Video $video)
+    {
+        return $user->id === $video->user_id;
+    }
 }

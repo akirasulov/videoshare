@@ -1,11 +1,12 @@
 <script setup>
+import DangerButton from "@/Components/DangerButton.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Textarea from "@/Components/Textarea.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, useForm } from "@inertiajs/vue3";
+import { Head, useForm, router } from "@inertiajs/vue3";
 
 const props = defineProps({
     video: {
@@ -18,6 +19,12 @@ const form = useForm({
     title: props.video.title,
     description: props.video.description,
 });
+
+const deleteVideo = () => {
+    if (window.confirm("Are you sure you want to delete ?")) {
+        router.delete(route("videos.destroy", props.video));
+    }
+};
 </script>
 <template>
     <Head :title="video.title"></Head>
@@ -94,6 +101,15 @@ const form = useForm({
                                 >
                                     Update Video
                                 </PrimaryButton>
+                                <DangerButton
+                                    type="button"
+                                    class="ms-3"
+                                    :class="{ 'opacity-25': form.processing }"
+                                    :disabled="form.processing"
+                                    @click="deleteVideo"
+                                >
+                                    Delete Video
+                                </DangerButton>
                             </div>
 
                             <p v-if="form.recentlySuccessful">Video Updated</p>
