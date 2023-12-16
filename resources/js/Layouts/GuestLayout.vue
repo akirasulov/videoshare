@@ -1,6 +1,10 @@
 <script setup>
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import { Link } from "@inertiajs/vue3";
+
+defineOptions({
+    inheritAttrs: false,
+});
 </script>
 
 <template>
@@ -14,6 +18,7 @@ import { Link } from "@inertiajs/vue3";
         </div>
 
         <div
+            v-bind="$attrs"
             class="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md dark:bg-gray-800 sm:max-w-md sm:rounded-lg"
         >
             <slot />

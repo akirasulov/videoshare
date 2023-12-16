@@ -23,6 +23,7 @@ class VideoResource extends JsonResource
             'still_path' => Storage::disk('public')->url($this->still_path),
             'video_path' => Storage::disk('public')->url($this->video_path),
             'created_at' => $this->created_at->toDateTimeString(),
+            'share_url' => route('videos.view', $this),
         ];
     }
 }

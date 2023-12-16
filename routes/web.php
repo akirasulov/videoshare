@@ -7,6 +7,7 @@ use App\Http\Controllers\VideoIndexController;
 use App\Http\Controllers\VideoShowController;
 use App\Http\Controllers\VideoStoreController;
 use App\Http\Controllers\VideoUpdateController;
+use App\Http\Controllers\VideoViewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +22,7 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', HomeController::class);
+Route::get('/view/{video:uuid}', VideoViewController::class)->name('videos.view');
 
 Route::middleware('auth')->group(function () {
     Route::get('/videos', VideoIndexController::class)->name('videos.index');

@@ -23,6 +23,20 @@ const form = useForm({
     <Head :title="video.title"></Head>
     <AuthenticatedLayout>
         <div class="py-12">
+            <div class="mx-auto mb-6 max-w-3xl sm:px-6 lg:px-8">
+                <div
+                    class="overflow-hidden bg-white p-6 shadow-sm dark:bg-gray-800 sm:rounded-lg"
+                >
+                    <InputLabel for="share_url" value="Share Link" />
+                    <input
+                        @click.prevent="$event.target.select()"
+                        type="text"
+                        :value="video.share_url"
+                        readonly
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600"
+                    />
+                </div>
+            </div>
             <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
                 <div
                     class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"
