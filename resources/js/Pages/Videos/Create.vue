@@ -8,7 +8,8 @@ import InputLabel from "@/Components/InputLabel.vue";
 import DangerButton from "@/Components/DangerButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
-
+import Textarea from "@/Components/Textarea.vue";
+import dayjs from "dayjs";
 const form = useForm({
     title: "",
     description: "",
@@ -32,6 +33,7 @@ const state = reactive({
 const player = ref(null);
 const videoPreview = ref(null);
 const shouldCaptureAudio = ref(true);
+const currentDay = computed(() => dayjs().format("YYYY-MM-DD"));
 
 const startRecording = () => {
     let chunks = [];
@@ -132,6 +134,9 @@ watch(
         form.video = new File([blob], "video.mp4", {
             type: "video/mp4",
         });
+
+        form.title = currentDay.value;
+        form.description = `A video captured on ${currentDay.value}`;
     },
 );
 </script>
@@ -177,9 +182,8 @@ watch(
                                     value="Description"
                                 />
 
-                                <TextInput
+                                <Textarea
                                     id="description"
-                                    type="text"
                                     class="mt-1 block w-full"
                                     v-model="form.description"
                                 />
