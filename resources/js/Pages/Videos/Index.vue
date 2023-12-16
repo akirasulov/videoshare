@@ -34,9 +34,10 @@ defineProps({
                             class="flex items-start space-x-6 p-6 text-gray-900 dark:text-gray-100"
                         >
                             <div
-                                class="h-24 w-32 rounded-lg bg-gray-800 bg-cover shadow-sm dark:bg-white"
+                                class="h-24 w-32 rounded-lg bg-black bg-cover"
                                 :style="`background-image: url(${video.still_path})`"
                             ></div>
+
                             <div>
                                 <h2
                                     class="text-lg font-semibold text-gray-900 dark:text-gray-100"
@@ -44,7 +45,7 @@ defineProps({
                                     {{ video.title }}
                                 </h2>
                                 <p class="text-gray-900 dark:text-gray-100">
-                                    {{ video.desription ?? "No description" }}
+                                    {{ video.description ?? "No description" }}
                                 </p>
                                 <p
                                     class="mt-6 text-sm text-gray-600 dark:text-gray-200"

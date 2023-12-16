@@ -2,6 +2,8 @@
 
 namespace App\Observers;
 
+use App\Jobs\ConvertVideoFormat;
+use App\Jobs\GenerateVideoPreviewImage;
 use App\Models\Video;
 use Illuminate\Support\Str;
 
@@ -20,7 +22,9 @@ class VideoObserver
      */
     public function created(Video $video): void
     {
-        //
+        // GenerateVideoPreviewImage::dispatchSync($video);
+        GenerateVideoPreviewImage::dispatch($video);
+        ConvertVideoFormat::dispatch($video);
     }
 
     /**
