@@ -5,7 +5,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Textarea from "@/Components/Textarea.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { useForm } from "@inertiajs/vue3";
+import { Head, useForm } from "@inertiajs/vue3";
 
 const props = defineProps({
     video: {
@@ -20,6 +20,7 @@ const form = useForm({
 });
 </script>
 <template>
+    <Head :title="video.title"></Head>
     <AuthenticatedLayout>
         <div class="py-12">
             <div class="mx-auto max-w-3xl sm:px-6 lg:px-8">
