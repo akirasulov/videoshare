@@ -201,6 +201,15 @@ watch(
                                     Save Video
                                 </PrimaryButton>
                                 <PrimaryButton
+                                    @click.prevent="
+                                        form.reset('title', 'description')
+                                    "
+                                    :class="{ 'opacity-25': form.processing }"
+                                    :disabled="form.processing"
+                                >
+                                    Reset
+                                </PrimaryButton>
+                                <PrimaryButton
                                     @click="form.cancel()"
                                     :class="{ 'opacity-25': form.processing }"
                                     :disabled="form.processing"
