@@ -159,7 +159,15 @@ watch(
                     class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <form v-show="state.blobUrl" class="space-y-6">
+                        <form
+                            v-show="state.blobUrl"
+                            @submit.prevent="
+                                form.post(route('videos.store'), {
+                                    preserveScroll: true,
+                                })
+                            "
+                            class="space-y-6"
+                        >
                             <video ref="videoPreview" controls></video>
                             <div>
                                 <InputLabel for="title" value="Title" />
