@@ -25,8 +25,9 @@ defineProps({
         <div class="py-12">
             <div class="mx-auto max-w-3xl space-y-3 sm:px-6 lg:px-8">
                 <template v-if="videos.length">
-                    <div
-                        class="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"
+                    <Link
+                        :href="route('videos.show', video)"
+                        class="block overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg"
                         v-for="video in videos"
                         :key="video.id"
                     >
@@ -54,7 +55,7 @@ defineProps({
                                 </p>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 </template>
                 <template v-else>
                     <div

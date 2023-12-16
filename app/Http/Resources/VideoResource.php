@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class VideoResource extends JsonResource
 {
@@ -19,8 +20,8 @@ class VideoResource extends JsonResource
             'uuid' => $this->uuid,
             'title' => $this->title,
             'description' => $this->description,
-            'still_path' => $this->still_path,
-            'video_path' => $this->video_path,
+            'still_path' => Storage::disk('public')->url($this->still_path),
+            'video_path' => Storage::disk('public')->url($this->video_path),
             'created_at' => $this->created_at->toDateTimeString(),
         ];
     }
