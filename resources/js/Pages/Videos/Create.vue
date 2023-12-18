@@ -39,9 +39,9 @@ const state = reactive({
         state.recorder ? state.recorder.state === "recording" : false,
     ),
 
-    // reset: () => {
-    //     Object.assign(state.initialState);
-    // },
+    reset: () => {
+        Object.assign(state, initialState);
+    },
 });
 
 const player = ref(null);
@@ -179,13 +179,18 @@ const handleFileUpload = (event) => {
     });
 
     state.uploader.on("success", (progress) => {
-        // state.reset();
+        state.reset();
         state.uploading = false;
         // router.reload({
         //     only: ["files"],
         //     preserveScroll: true,
         // });
     });
+};
+
+const cancel = () => {
+    state.uploader.abort();
+    state.reset();
 };
 </script>
 
@@ -356,6 +361,15 @@ const handleFileUpload = (event) => {
                                                 width: state.progress + '%',
                                             }"
                                         ></div>
+                                    </div>
+                                    <div
+                                        class="mt-2 flex items-center space-x-3"
+                                    >
+                                        <PrimaryButton
+                                            class="!px-2 !py-1"
+                                            @click="cancel"
+                                            >Cancel</PrimaryButton
+                                        >
                                     </div>
                                 </div>
 
