@@ -298,6 +298,7 @@ const handleFileUpload = (event) => {
                                             id="dropzone-file"
                                             type="file"
                                             class="hidden"
+                                            accept="video/mp4, video/webm, video/x-mkv"
                                         />
                                     </label>
                                 </div>
