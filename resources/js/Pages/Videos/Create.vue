@@ -362,9 +362,24 @@ const cancel = () => {
                                             }"
                                         ></div>
                                     </div>
+
                                     <div
                                         class="mt-2 flex items-center space-x-3"
                                     >
+                                        <PrimaryButton
+                                            v-if="!state.uploader.paused"
+                                            class="!px-2 !py-1"
+                                            @click="state.uploader.pause()"
+                                        >
+                                            Pause</PrimaryButton
+                                        >
+                                        <PrimaryButton
+                                            v-if="state.uploader.paused"
+                                            class="!px-2 !py-1"
+                                            @click="state.uploader.resume()"
+                                        >
+                                            Resume</PrimaryButton
+                                        >
                                         <PrimaryButton
                                             class="!px-2 !py-1"
                                             @click="cancel"
