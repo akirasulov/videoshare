@@ -20,6 +20,7 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@mux/upchunk": "^3.3.0",
         "@vueuse/core": "^10.7.0",
         "dayjs": "^1.11.10"
     }

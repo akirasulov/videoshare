@@ -2,7 +2,7 @@
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, useForm } from "@inertiajs/vue3";
+import { Head, useForm, usePage } from "@inertiajs/vue3";
 import { computed, reactive, ref, watch } from "vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import DangerButton from "@/Components/DangerButton.vue";
@@ -10,6 +10,7 @@ import TextInput from "@/Components/TextInput.vue";
 import InputError from "@/Components/InputError.vue";
 import Textarea from "@/Components/Textarea.vue";
 import dayjs from "dayjs";
+import { createUpload } from "@mux/upchunk";
 const form = useForm({
     title: "",
     description: "",
@@ -21,6 +22,7 @@ const state = reactive({
     audioStream: null,
     recorder: null,
     blob: null,
+    uploader: null,
     blobUrl: computed(() =>
         state.blob ? URL.createObjectURL(state.blob) : null,
     ),
@@ -144,11 +146,22 @@ watch(
 );
 
 const handleFileUpload = (event) => {
+    let file = event.target.files[0];
     showForm.value = true;
-    videoPreview.value.src = URL.createObjectURL(event.target.files[0]);
+    videoPreview.value.src = URL.createObjectURL(file);
     form.video = event.target.files[0];
     form.title = currentDay.value;
     form.description = `A video captured on ${currentDay.value}`;
+
+    state.uploader = createUpload({
+        endpoint: route("files.store"),
+        headers: {
+            "X-CSRF-TOKEN": usePage().props.csrf_token,
+        },
+        method: "post",
+        file: state.file,
+        chunkSize: 10 * 1024, // 10mb
+    });
 };
 </script>
 

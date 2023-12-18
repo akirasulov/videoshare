@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FileStoreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VideoCreateController;
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/videos/{video:uuid}', VideoShowController::class)->name('videos.show');
     Route::patch('/videos/{video:uuid}', VideoUpdateController::class)->name('videos.update');
     Route::delete('/videos/{video:uuid}', VideoDestroyController::class)->name('videos.destroy');
+
+    Route::post('/files', FileStoreController::class)->name('files.store');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
