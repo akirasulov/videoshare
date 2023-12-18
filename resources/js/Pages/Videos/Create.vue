@@ -23,6 +23,9 @@ const state = reactive({
     recorder: null,
     blob: null,
     uploader: null,
+    uploading: false,
+    progress: 0,
+    formattedProgress: computed(() => Math.round(state.progress)),
     blobUrl: computed(() =>
         state.blob ? URL.createObjectURL(state.blob) : null,
     ),
@@ -37,7 +40,6 @@ const videoPreview = ref(null);
 const shouldCaptureAudio = ref(true);
 const currentDay = computed(() => dayjs().format("YYYY-MM-DD"));
 const file = ref(null);
-const showForm = ref(false);
 
 const startRecording = () => {
     let chunks = [];
@@ -147,11 +149,8 @@ watch(
 
 const handleFileUpload = (event) => {
     let file = event.target.files[0];
-    showForm.value = true;
+
     videoPreview.value.src = URL.createObjectURL(file);
-    form.video = event.target.files[0];
-    form.title = currentDay.value;
-    form.description = `A video captured on ${currentDay.value}`;
 
     state.uploader = createUpload({
         endpoint: route("files.store"),
@@ -159,9 +158,21 @@ const handleFileUpload = (event) => {
             "X-CSRF-TOKEN": usePage().props.csrf_token,
         },
         method: "post",
-        file: state.file,
+        file: file,
         chunkSize: 10 * 1024, // 10mb
     });
+
+    state.uploader.on("attempt", () => {
+        state.uploading = true;
+    });
+
+    state.uploader.on("progress", (progress) => {
+        state.progress = progress.detail;
+    });
+
+    // state.uploader.on("success", () => {
+    //     state.uploading = false;
+    // });
 };
 </script>
 
@@ -184,7 +195,7 @@ const handleFileUpload = (event) => {
                 >
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <form
-                            v-show="state.blobUrl || showForm"
+                            v-show="state.blobUrl"
                             @submit.prevent="
                                 form.post(route('videos.store'), {
                                     preserveScroll: true,
@@ -274,7 +285,6 @@ const handleFileUpload = (event) => {
                                 class="space-y-6"
                             >
                                 <div
-                                    v-if="!showForm"
                                     class="flex w-full items-center justify-center"
                                 >
                                     <label
@@ -315,9 +325,29 @@ const handleFileUpload = (event) => {
                                         />
                                     </label>
                                 </div>
+                                <div v-if="state.uploading">
+                                    <div class="mb-1 flex justify-center">
+                                        <span
+                                            class="text-sm font-medium text-blue-700 dark:text-white"
+                                            >{{
+                                                state.formattedProgress
+                                            }}%</span
+                                        >
+                                    </div>
+                                    <div
+                                        style="width: 100%"
+                                        class="h-2.5 rounded-full bg-gray-200 dark:bg-gray-700"
+                                    >
+                                        <div
+                                            class="h-2.5 rounded-full bg-blue-600 transition-all duration-200"
+                                            v-bind:style="{
+                                                width: state.progress + '%',
+                                            }"
+                                        ></div>
+                                    </div>
+                                </div>
 
                                 <div
-                                    v-if="!showForm"
                                     class="flex items-center justify-center space-x-4"
                                 >
                                     <PrimaryButton @click="captureWebcam"

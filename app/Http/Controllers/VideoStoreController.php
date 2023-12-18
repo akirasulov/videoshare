@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\VideoStoreRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 class VideoStoreController extends Controller
