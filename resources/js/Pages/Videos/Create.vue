@@ -22,6 +22,7 @@ const initialState = reactive({
     uploader: null,
     uploading: false,
     progress: 0,
+    error: null,
 });
 
 const state = reactive({
@@ -171,6 +172,7 @@ const handleFileUpload = (event) => {
     });
 
     state.uploader.on("attempt", () => {
+        state.error = null;
         state.uploading = true;
     });
 
@@ -185,6 +187,10 @@ const handleFileUpload = (event) => {
         //     only: ["files"],
         //     preserveScroll: true,
         // });
+    });
+
+    state.uploader.on("error", (error) => {
+        state.error = error.detail.message;
     });
 };
 
@@ -386,6 +392,10 @@ const cancel = () => {
                                             >Cancel</PrimaryButton
                                         >
                                     </div>
+                                    <InputError
+                                        class="mt-2"
+                                        :message="state.error"
+                                    />
                                 </div>
 
                                 <div
