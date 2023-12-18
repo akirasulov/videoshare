@@ -2,7 +2,7 @@
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Checkbox from "@/Components/Checkbox.vue";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, useForm, usePage } from "@inertiajs/vue3";
+import { Head, router, useForm, usePage } from "@inertiajs/vue3";
 import { computed, reactive, ref, watch } from "vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import DangerButton from "@/Components/DangerButton.vue";
@@ -17,14 +17,19 @@ const form = useForm({
     video: null,
 });
 
+const initialState = reactive({
+    file: null,
+    uploader: null,
+    uploading: false,
+    progress: 0,
+});
+
 const state = reactive({
+    ...initialState,
     stream: null,
     audioStream: null,
     recorder: null,
     blob: null,
-    uploader: null,
-    uploading: false,
-    progress: 0,
     formattedProgress: computed(() => Math.round(state.progress)),
     blobUrl: computed(() =>
         state.blob ? URL.createObjectURL(state.blob) : null,
@@ -33,13 +38,16 @@ const state = reactive({
     isRecording: computed(() =>
         state.recorder ? state.recorder.state === "recording" : false,
     ),
+
+    // reset: () => {
+    //     Object.assign(state.initialState);
+    // },
 });
 
 const player = ref(null);
 const videoPreview = ref(null);
 const shouldCaptureAudio = ref(true);
 const currentDay = computed(() => dayjs().format("YYYY-MM-DD"));
-const file = ref(null);
 
 const startRecording = () => {
     let chunks = [];
@@ -148,9 +156,9 @@ watch(
 );
 
 const handleFileUpload = (event) => {
-    let file = event.target.files[0];
+    state.file = event.target.files[0];
 
-    videoPreview.value.src = URL.createObjectURL(file);
+    videoPreview.value.src = URL.createObjectURL(state.file);
 
     state.uploader = createUpload({
         endpoint: route("files.store"),
@@ -158,7 +166,7 @@ const handleFileUpload = (event) => {
             "X-CSRF-TOKEN": usePage().props.csrf_token,
         },
         method: "post",
-        file: file,
+        file: state.file,
         chunkSize: 10 * 1024, // 10mb
     });
 
@@ -170,9 +178,14 @@ const handleFileUpload = (event) => {
         state.progress = progress.detail;
     });
 
-    // state.uploader.on("success", () => {
-    //     state.uploading = false;
-    // });
+    state.uploader.on("success", (progress) => {
+        // state.reset();
+        state.uploading = false;
+        // router.reload({
+        //     only: ["files"],
+        //     preserveScroll: true,
+        // });
+    });
 };
 </script>
 
@@ -317,7 +330,6 @@ const handleFileUpload = (event) => {
                                         </div>
                                         <input
                                             @change="handleFileUpload"
-                                            ref="file"
                                             id="dropzone-file"
                                             type="file"
                                             class="hidden"
