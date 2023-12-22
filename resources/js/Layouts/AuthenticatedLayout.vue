@@ -6,7 +6,7 @@ import DropdownLink from "@/Components/DropdownLink.vue";
 import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
 import { Link } from "@inertiajs/vue3";
-
+import ThemeToogle from "@/Components/ThemeToogle.vue";
 const showingNavigationDropdown = ref(false);
 </script>
 
@@ -50,7 +50,8 @@ const showingNavigationDropdown = ref(false);
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
                             <!-- Settings Dropdown -->
-                            <div class="relative ms-3">
+                            <div class="relative ms-3 flex space-x-2">
+                                <ThemeToogle />
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
                                         <span class="inline-flex rounded-md">
@@ -95,7 +96,10 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <!-- Hamburger -->
-                        <div class="-me-2 flex items-center sm:hidden">
+                        <div
+                            class="-me-2 flex items-center space-x-2 sm:hidden"
+                        >
+                            <ThemeToogle />
                             <button
                                 @click="
                                     showingNavigationDropdown =
