@@ -14,7 +14,7 @@ class VideoStoreController extends Controller
     {
         $request->user()->videos()->create(
             $request->only('title', 'description') + [
-                'video_path' => $request->video->storePubliclyAs('videos', Str::uuid() . '.mp4', 'public'),
+                'video_path' => $request->video->storePubliclyAs('videos', Str::uuid().'.mp4', 'public'),
             ]
         );
 

@@ -43,6 +43,6 @@ class ConvertVideoFormat implements ShouldQueue
                     'video_path' => $media->getPath(),
                 ]);
             })
-            ->save('videos/' . Str::uuid() . '.mp4'); //update video still path
+            ->save('videos/'.Str::uuid().'.mp4'); //update video still path
     }
 }

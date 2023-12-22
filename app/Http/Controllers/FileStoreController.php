@@ -44,8 +44,8 @@ class FileStoreController extends Controller
 
         $request->user()->videos()->create([
             'title' => $now,
-            'description' => 'A video captured on ' . $now,
-            'video_path' => $file->storeAs('videos', Str::uuid() . '.mp4', 'public'),
+            'description' => 'A video captured on '.$now,
+            'video_path' => $file->storeAs('videos', Str::uuid().'.mp4', 'public'),
         ]);
 
         return redirect()->route('videos.index');

@@ -39,7 +39,7 @@ class GenerateVideoPreviewImage implements ShouldQueue
                     'still_path' => $media->getPath(),
                 ]);
             })
-            ->save('stills/' . Str::uuid() . '.jpg'); //update video still path
+            ->save('stills/'.Str::uuid().'.jpg'); //update video still path
 
     }
 }

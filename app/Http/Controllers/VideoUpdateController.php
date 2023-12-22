@@ -14,7 +14,7 @@ class VideoUpdateController extends Controller
     public function __invoke(VideoUpdateRequest $requst, Video $video)
     {
         $video->update($requst->only('title', 'description'));
-        
+
         return back();
     }
 }
